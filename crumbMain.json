@@ -1,0 +1,495 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "trigger": [
+          "app_mention"
+        ],
+        "channelId": {
+          "__rl": true,
+          "value": "C097PV4TDL1",
+          "mode": "list",
+          "cachedResultName": "all-automartion-ai-crumb"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.slackTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1168,
+        288
+      ],
+      "id": "b05392a2-1225-4ecf-a3db-11deb2f0e0bb",
+      "name": "Slack Trigger",
+      "webhookId": "9aa4327a-294d-4ab9-b7e7-601fdf7d0d81",
+      "credentials": {
+        "slackApi": {
+          "id": "ChvuQE7ZlTcfdYbD",
+          "name": "Slack account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -896,
+        320
+      ],
+      "id": "fa722e50-5194-4cee-ae7f-73c34eb95341",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "f55YpwofdI64MQ90",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C097PV4TDL1",
+          "mode": "list",
+          "cachedResultName": "all-automartion-ai-crumb"
+        },
+        "text": "={{ $json.message }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "4e36356c-45ae-4d4b-94f7-e9b248485104",
+      "name": "Slack",
+      "webhookId": "5ea02e15-b78c-425c-88f0-e733bc620d3b",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "yMYfHI1LDHfBthS3",
+          "name": "Slack account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const outputStr = items[0].json.output;\n\nconst parsedOutput = JSON.parse(outputStr);\n\nreturn [\n  {\n    json: parsedOutput\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -448,
+        112
+      ],
+      "id": "497d58d4-2045-4be5-92e7-78af6cb1eff5",
+      "name": "Code3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "23f2fd0d-02a7-4a66-91d3-2a298fcd2e17",
+              "leftValue": "={{ $json.for }}",
+              "rightValue": "user",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -224,
+        112
+      ],
+      "id": "ed8f8e89-62d1-45cd-8570-8ad78b4694c3",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C099AF78C0G",
+          "mode": "list",
+          "cachedResultName": "bot-review"
+        },
+        "text": "={{ $json.message }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        0,
+        208
+      ],
+      "id": "ffd45db1-4f5e-44fe-a1b2-9da4df1215a0",
+      "name": "Slack1",
+      "webhookId": "0584cbbc-29c1-4b9a-9173-0869af312b76",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "yMYfHI1LDHfBthS3",
+          "name": "Slack account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "trigger": [
+          "app_mention"
+        ],
+        "channelId": {
+          "__rl": true,
+          "value": "C099AF78C0G",
+          "mode": "list",
+          "cachedResultName": "bot-review"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.slackTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1184,
+        496
+      ],
+      "id": "9a062937-8bc4-4265-b96b-71b6058afe17",
+      "name": "Slack Trigger1",
+      "webhookId": "c859953d-4b6e-43e3-a83c-884e09f672ba",
+      "credentials": {
+        "slackApi": {
+          "id": "ChvuQE7ZlTcfdYbD",
+          "name": "Slack account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.blocks[0].elements[0].elements[1].text }}",
+        "options": {
+          "systemMessage": "=Use Case Overview:  \nThis bot interacts with users on Slack and intelligently responds or escalates queries based on whether the answer is found inside a document.  \n\n1. Trigger:  \n- A user sends a message or asks a question on Slack.  \n\n2. Agent Behavior:  \n\na) Greeting Detection  \n- The n8n AI Agent first checks if the message is a greeting (e.g., \"hi\", \"hello\", \"good morning\", or asking \"how are you\", \"how's your day\", etc.).  \n- If it is a greeting or a message about the day, the agent should politely respond without escalating strictly in this JSON format:  \n\n{\n  \"for\": \"user\",\n  \"message\": \"Hi there! Hope you're having a great day. Let me know if you have any questions regarding the SENIOR DEVELOPER SERVICES AGREEMENT.\"\n}\n\nb) Query Handling  \n- If the message is not a greeting, the agent will send the user’s question to the Docs content tool.  \n- The Docs content tool fetches the relevant drafted answer.  \n\nImportant Change:  \n- The agent must summarize the drafted content into a clear, concise, user-friendly answer.  \n- It must not just copy and paste the raw document text.  \n\nExample:  \nIf the document says:  \n“The Senior Developer shall provide services on a full-time basis of at least 40 hours per week, excluding holidays.”  \n\nThe agent should respond:  \n{\n  \"for\": \"user\",\n  \"message\": \"The agreement requires the Senior Developer to work full-time, at least 40 hours per week, excluding holidays.\"\n}\n\nc) Error Handling (Docs Tool Error / File Missing)  \n- If the Docs content tool returns an error (e.g., file not found, invalid request) or( 'the resources cant be found to give the answer to this question!'), the agent should not escalate immediately.  \n- Instead, it should ask the user to confirm or provide the correct file name:  \n\n{\n  \"for\": \"user\",\n  \"message\": \"I couldn’t access the document. Could you please confirm if the file name is correct?\"\n}\n\n3. Conditions & Output  \n\n- If Greeting Detected → Friendly JSON response.  \n- If Answer Found in Document → Summarized JSON response.  \n- If Docs Tool Error / File Not Found → Ask for correct file name in JSON.  \n- If Answer Not Found in Document → Escalate to reviewer:  \n\n{\n  \"for\": \"review\",\n  \"message\": \"This person (name) is asking this: <user message>. What do you want to respond to them?\"\n}\n\n4. Special Rules  \n\n- If the user asks: \"what do you know?\" →  \n{\n  \"for\": \"user\",\n  \"message\": \"i am a legal bot for CRUMB so i have been trained to answer the CRUMB related Legal data!!\"\n}\n\n- If the user asks what documents exist / how many →  \n{\n  \"for\": \"user\",\n  \"message\": \"We have documents on Employment (4), Corporate (5), and Commercial (8).\"\n}\n\n⚠️ IMPORTANT ERROR HANDLING RULE:\nIf the Docs content tool returns ANY error, irrelevant message, or response that does not provide an actual answer to the user’s question (e.g., \"the resources cant be found to give the answer to this question!\"), \nthe agent must ignore that message and instead reply with:\n\n{\n  \"for\": \"user\",\n  \"message\": \"I couldn’t access the document. Could you please confirm if the file name is correct?\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        -848,
+        112
+      ],
+      "id": "2cc44fe8-c150-4f7a-bbfa-bbdfe3ed802c",
+      "name": "USER AND BOT"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -864,
+        800
+      ],
+      "id": "1f2aab01-4553-459c-8fa2-10ba86f77c96",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "f55YpwofdI64MQ90",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Slack Trigger1').item.json.blocks }}",
+        "contextWindowLength": 15
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -704,
+        800
+      ],
+      "id": "dce4c594-2898-4d1d-a4a6-eefb22685813",
+      "name": "Simple Memory1"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C097PV4TDL1",
+          "mode": "list",
+          "cachedResultName": "all-automartion-ai-crumb"
+        },
+        "text": "={{ $json.message }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        -240,
+        576
+      ],
+      "id": "69e60714-29a4-408c-869a-398140cafde4",
+      "name": "Slack2",
+      "webhookId": "79e0f005-ff5d-4874-a842-6eb307e13849",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "yMYfHI1LDHfBthS3",
+          "name": "Slack account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=user_id:\n{{ $json.blocks[0].elements[0].elements[0].user_id }}\nreviewer message: message:\n{{ $json.blocks[0].elements[0].elements[1].text }}",
+        "options": {
+          "systemMessage": "=Overview:\nThis bot handles responses from human reviewers. It takes input provided by the human reviewer and sends a refined, user-facing message to the original Slack channel where the user initially asked the question.\n\n1. Trigger:\n    - A reviewer provides a response in a designated input channel (e.g., form, Slack message, or internal review panel).\n\n2. Agent Behavior:\n    - The bot receives the reviewer's message.\n    - It analyzes the reviewer's input and generates a clear, polite, and direct message intended for the user.\n    - It sends this message to the original Slack channel.\n\n3. Output Format:\n    - The final message posted in Slack should follow this format:\n\n    ```\n    <AI-generated, polite, clear response based on the reviewer’s input>\n    ```\n\n4. Message Handling Rules:\n    - If the reviewer's message contains phrases like:\n        • \"tell them...\"\n        • \"ask them to...\"\n        • \"they should...\"\n        • \"let the client know...\"\n      → Do NOT forward this language verbatim.\n\n    - Instead, paraphrase the intent into a polite second-person message directed at the original user.\n\n    - Example:\n        Reviewer says: \"Tell them to uncomment this section.\"\n        Bot response: \"Could you please uncomment this section so everything runs correctly?\"\n\n5. Notes:\n    - All responses must maintain a respectful, helpful, and professional tone.\n    - AI processing/paraphrasing is required before sending the final message.\n    - Optionally, the bot can log the delivery status internally (silent confirmation).\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        -848,
+        576
+      ],
+      "id": "641c921c-8314-40e0-ab5f-67f5fb4013b7",
+      "name": "reviewer"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the string from the input\nconst outputStr = items[0].json.output;\n\n// Remove triple backticks and trim whitespace\nconst cleanedMessage = outputStr.replace(/```/g, '').trim();\n\n// Return the message in JSON format\nreturn [\n  {\n    json: {\n      message: cleanedMessage\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -464,
+        576
+      ],
+      "id": "f2cc3717-424a-442e-a16c-ff2722eb33b4",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "description": "call this tool when we need the content from the document.",
+        "workflowId": {
+          "__rl": true,
+          "value": "N92qM29s2UDPUCVs",
+          "mode": "list",
+          "cachedResultName": "document_processing"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -576,
+        320
+      ],
+      "id": "52213e20-25ee-49ad-8022-010fede8216e",
+      "name": "Docs content"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Slack Trigger').item.json.blocks[0].elements }}",
+        "contextWindowLength": 15
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -720,
+        336
+      ],
+      "id": "30beb607-d901-4338-8173-ee139e226bd6",
+      "name": "Simple Memory",
+      "disabled": true
+    }
+  ],
+  "connections": {
+    "Slack Trigger": {
+      "main": [
+        [
+          {
+            "node": "USER AND BOT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "USER AND BOT",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code3": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Slack",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Slack1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Slack Trigger1": {
+      "main": [
+        [
+          {
+            "node": "reviewer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "USER AND BOT": {
+      "main": [
+        [
+          {
+            "node": "Code3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "reviewer",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "reviewer",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "reviewer": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Slack2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Docs content": {
+      "ai_tool": [
+        [
+          {
+            "node": "USER AND BOT",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "USER AND BOT",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0aa722f86bb332e232ec98ea168cef818ddee9aedd3b741e78182c3ab3631ee1"
+  }
+}
